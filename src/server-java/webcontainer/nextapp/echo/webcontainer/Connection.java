@@ -52,6 +52,8 @@ public class Connection extends AbstractConnection {
      * @param servlet the <code>WebContainerServlet</code> generating the connection
      * @param request the HTTP request object that was passed to the servlet
      * @param response the HTTP response object that was passed to the servlet
+     * @throws IOException if I/O error occur
+     * @throws ServletException if servlet errors occur
      */
     Connection(WebContainerServlet servlet, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         super(servlet, request);

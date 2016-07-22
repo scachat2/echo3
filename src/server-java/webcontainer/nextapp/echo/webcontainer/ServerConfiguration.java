@@ -95,7 +95,7 @@ public class ServerConfiguration {
 
     /**
      * Update configuration with servlet init parameters
-     * @param initParameters
+     * @param initParameters init parameter map
      */
     public static void adoptServletConfiguration(Map initParameters) {
         readConfiguration(initParameters);

@@ -99,6 +99,7 @@ implements SerialPropertyPeer {
      * @param context the relevant <code>Context</code>
      * @param border the border to render
      * @return the created node, may be a <code>Text</code> or <code>Element</code> node
+     * @throws SerialException when the property cannot be de-serialized.
      */
     public static final Node toNode(Context context, Border border) 
     throws SerialException {
@@ -125,7 +126,7 @@ implements SerialPropertyPeer {
      * 
      * @param border the border
      * @return the string representation
-     * @throws SerialException
+     * @throws SerialException when the property cannot be de-serialized.
      */
     public static final String toString(Border border) 
     throws SerialException {
@@ -137,7 +138,7 @@ implements SerialPropertyPeer {
      * 
      * @param side the border side
      * @return the string representation
-     * @throws SerialException
+     * @throws SerialException when the property cannot be de-serialized.
      */
     public static final String toString(Border.Side side) 
     throws SerialException {
@@ -153,6 +154,7 @@ implements SerialPropertyPeer {
     /**
      * @see nextapp.echo.app.serial.SerialPropertyPeer#toProperty(Context,
      *      Class, org.w3c.dom.Element)
+     * @throws SerialException when the property cannot be de-serialized.
      */
     public Object toProperty(Context context, Class objectClass, Element propertyElement) 
     throws SerialException {
@@ -189,6 +191,7 @@ implements SerialPropertyPeer {
     /**
      * @see nextapp.echo.app.serial.SerialPropertyPeer#toXml(nextapp.echo.app.util.Context,
      *      java.lang.Class, org.w3c.dom.Element, java.lang.Object)
+     * @throws SerialException when the property cannot be de-serialized.
      */
     public void toXml(Context context, Class objectClass, Element propertyElement, Object propertyValue)
     throws SerialException {

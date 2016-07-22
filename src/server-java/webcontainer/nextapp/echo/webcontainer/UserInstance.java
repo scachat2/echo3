@@ -434,6 +434,7 @@ public class UserInstance implements Serializable {
     /**
      * Returns an iterator over updated property names.
      * Invoked by OutputProcessor.
+     * @return the iterator
      */
     Iterator getUpdatedPropertyNames() {
         if (updatedPropertyNames.size() == 0) {

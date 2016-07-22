@@ -1,4 +1,4 @@
-/* 
+/*
  * This file is part of the Echo Web Application Framework (hereinafter "Echo").
  * Copyright (C) 2002-2009 NextApp, Inc.
  *
@@ -26,7 +26,6 @@
  * the provisions above, a recipient may use your version of this file under
  * the terms of any one of the MPL, the GPL or the LGPL.
  */
-
 package nextapp.echo.webcontainer.service;
 
 import java.io.IOException;
@@ -44,61 +43,71 @@ import nextapp.echo.webcontainer.UserInstance;
 import nextapp.echo.webcontainer.util.PngEncoder;
 
 /**
- * A <code>Service</code> which renders stream image references (including <code>ResourceImageReference</code>s and
- * <code>AwtImageReference</code>s.
+ * A <code>Service</code> which renders stream image references (including
+ * <code>ResourceImageReference</code>s and <code>AwtImageReference</code>s.
  */
-public class ImageService 
-implements Service {
+public class ImageService
+        implements Service {
 
-    /** <code>Service</code> identifier. */
-    private static final String SERVICE_ID = "Echo.Image"; 
-    
-    /** Singleton instance of this <code>Service</code>. */
+    /**
+     * <code>Service</code> identifier.
+     */
+    private static final String SERVICE_ID = "Echo.Image";
+
+    /**
+     * Singleton instance of this <code>Service</code>.
+     */
     public static final ImageService INSTANCE = new ImageService();
-    
-    /** Image identifier URL parameter. */
-    private static final String PARAMETER_IMAGE_UID = "iid"; 
 
-    /** URL parameters (used for creating URIs). */
-    private static final String[] URL_PARAMETERS = new String[]{PARAMETER_IMAGE_UID}; 
-    
+    /**
+     * Image identifier URL parameter.
+     */
+    private static final String PARAMETER_IMAGE_UID = "iid";
+
+    /**
+     * URL parameters (used for creating URIs).
+     */
+    private static final String[] URL_PARAMETERS = new String[]{PARAMETER_IMAGE_UID};
+
     /**
      * @see nextapp.echo.webcontainer.Service#getId()
      */
     public String getId() {
         return SERVICE_ID;
     }
-    
+
     /**
      * @see nextapp.echo.webcontainer.Service#getVersion()
      */
+    @Override
     public int getVersion() {
         return 0; // Enable caching.
     }
 
     /**
-     * Creates a URI to retrieve a specific image for a specific component 
-     * from the server.
-     * 
+     * Creates a URI to retrieve a specific image for a specific component from
+     * the server.
+     *
      * @param userInstance the relevant application user instance
      * @param imageId the unique id to retrieve the image from the
-     *        <code>ContainerInstance</code>
+     * <code>ContainerInstance</code>
+     * @return the URI
      */
     public String createUri(UserInstance userInstance, String imageId) {
         return userInstance.getServiceUri(this, URL_PARAMETERS, new String[]{imageId});
     }
 
     /**
-     * Renders the specified image to the given connection.
-     * Implementations should set the response content type, and write image
-     * data to the response <code>OutputStream</code>.
-     * 
+     * Renders the specified image to the given connection. Implementations
+     * should set the response content type, and write image data to the
+     * response <code>OutputStream</code>.
+     *
      * @param conn the <code>Connection</code> on which to render the image
      * @param imageReference the image to be rendered
      * @throws IOException if the image cannot be rendered
      */
-    public void renderImage(Connection conn, ImageReference imageReference) 
-    throws IOException {
+    public void renderImage(Connection conn, ImageReference imageReference)
+            throws IOException {
         if (imageReference instanceof StreamImageReference) {
             renderStreamImage(conn, imageReference);
         } else if (imageReference instanceof AwtImageReference) {
@@ -107,16 +116,17 @@ implements Service {
             throw new SynchronizationException("Unsupported image type: " + imageReference.getClass().getName(), null);
         }
     }
-    
+
     /**
      * Renders an <code>AwtImageReference</code>.
-     * 
-     * @param conn the <code>Connection</code> to which the image should be rendered
+     *
+     * @param conn the <code>Connection</code> to which the image should be
+     * rendered
      * @param imageReference the image to render
-     * @throws IOException
+     * @throws IOException if I/O errors occur
      */
-    private void renderAwtImage(Connection conn, ImageReference imageReference) 
-    throws IOException {
+    private void renderAwtImage(Connection conn, ImageReference imageReference)
+            throws IOException {
         try {
             PngEncoder encoder = new PngEncoder(((AwtImageReference) imageReference).getImage(), true, null, 3);
             conn.setContentType(ContentType.IMAGE_PNG);
@@ -131,13 +141,14 @@ implements Service {
 
     /**
      * Renders a <code>StreamImageReference</code>.
-     * 
-     * @param conn the <code>Connection</code> to which the image should be rendered
+     *
+     * @param conn the <code>Connection</code> to which the image should be
+     * rendered
      * @param imageReference the image to render
-     * @throws IOException
+     * @throws IOException if I/O errors occur
      */
     private void renderStreamImage(Connection conn, ImageReference imageReference)
-    throws IOException {
+            throws IOException {
         try {
             StreamImageReference streamImageReference = (StreamImageReference) imageReference;
             conn.setContentType(new ContentType(streamImageReference.getContentType(), true));
@@ -149,23 +160,25 @@ implements Service {
             // enough information to suggest that such a strategy would be adequate.
         }
     }
-    
+
     /**
      * Gets the image with the specified id.
-     * 
-     * @param userInstance the <code>UserInstance</code> from which the image was requested
+     *
+     * @param userInstance the <code>UserInstance</code> from which the image
+     * was requested
      * @param imageId the id of the image
      * @return the image if found, <code>null</code> otherwise.
      */
     public ImageReference getImage(UserInstance userInstance, String imageId) {
         return (ImageReference) userInstance.getIdTable().getObject(imageId);
     }
-    
+
     /**
-     * @see nextapp.echo.webcontainer.Service#service(nextapp.echo.webcontainer.Connection)
+     * @see
+     * nextapp.echo.webcontainer.Service#service(nextapp.echo.webcontainer.Connection)
      */
     public void service(Connection conn)
-    throws IOException {
+            throws IOException {
         UserInstance userInstance = (UserInstance) conn.getUserInstance();
         if (userInstance == null) {
             serviceBadRequest(conn, "No container available.");
@@ -176,19 +189,19 @@ implements Service {
             serviceBadRequest(conn, "Image UID not specified.");
             return;
         }
-        
+
         ImageReference imageReference = getImage(userInstance, imageId);
-        
+
         if (imageReference == null) {
             serviceBadRequest(conn, "Image UID is not valid.");
             return;
         }
         renderImage(conn, imageReference);
     }
-    
+
     /**
      * Services a bad request.
-     * 
+     *
      * @param conn the <code>Connection</code>
      * @param message the error message
      */

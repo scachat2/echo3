@@ -126,6 +126,7 @@ public class DomUtil {
      * @param publicId the external subset public identifier
      * @param systemId the external subset system identifier
      * @param namespaceUri the namespace URI of the document element to create
+     * @return the new document
      */
     public static Document createDocument(String qualifiedName, String publicId, String systemId, String namespaceUri) {
         DOMImplementation dom = DomUtil.getDocumentBuilder().getDOMImplementation();
@@ -243,6 +244,7 @@ public class DomUtil {
      * Returns the text content of a DOM <code>Element</code>.
      * 
      * @param element The <code>Element</code> to analyze.
+     * @return the text
      */
     public static String getElementText(Element element) {
         NodeList children = element.getChildNodes();
@@ -262,7 +264,7 @@ public class DomUtil {
      * @param document the <code>Document</code>
      * @param out the <code>OutputStream</code>
      * @param outputProperties output properties passed to XML transformer
-     * @throws SAXException
+     * @throws SAXException if a xml exception occurs
      */
     public static void save(Document document, OutputStream out, Properties outputProperties) 
     throws SAXException {
@@ -275,7 +277,7 @@ public class DomUtil {
      * @param document the <code>Document</code>
      * @param w the <code>PrintWriter</code>
      * @param outputProperties output properties passed to XML transformer
-     * @throws SAXException
+     * @throws SAXException if a xml exception occurs
      */
     public static void save(Document document, PrintWriter w, Properties outputProperties) 
     throws SAXException {

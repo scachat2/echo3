@@ -150,6 +150,7 @@ class OutputProcessor {
     /**
      * Processes pending output from the application, generating a server message and rendering it
      * to the output <code>PrintWriter</code> of the <code>Connection</code> specified in the constructor.
+     * @throws IOException if I/O errors occur
      */
     public void process() 
     throws IOException {
@@ -208,6 +209,7 @@ class OutputProcessor {
     
     /**
      * Renders full-refresh application-level properties.
+     * @throws SerialException when the property cannot be de-serialized.
      */
     private void renderApplicationFull() 
     throws SerialException {
@@ -225,6 +227,7 @@ class OutputProcessor {
     
     /**
      * Renders incrementally updated application instance properties.
+     * @throws SerialException when the property cannot be de-serialized.
      */
     private void renderApplicationIncremental() 
     throws SerialException {
@@ -241,6 +244,7 @@ class OutputProcessor {
     
     /**
      * Renders state of <code>ClientConfiguration</code> object associated with the <code>UserInstance</code>.
+     * @throws SerialException when the property cannot be de-serialized.
      */
     private void renderClientConfiguration() 
     throws SerialException {
@@ -276,6 +280,7 @@ class OutputProcessor {
     
     /**
      * Renders enqueued commands to server message.
+     * @throws SerialException when the property cannot be de-serialized.
      */
     private void renderCommands() 
     throws SerialException {
@@ -313,7 +318,7 @@ class OutputProcessor {
      * @param command the <code>Command</code>
      * @param propertyName the name of the property
      * @param propertyIndex the property index
-     * @throws SerialException
+     * @throws SerialException when the property cannot be de-serialized.
      */
     private void renderCommandProperty(Element commandExecuteElement, CommandSynchronizePeer commandPeer,
             Command command, String propertyName, int propertyIndex) 
@@ -347,7 +352,7 @@ class OutputProcessor {
      * Renders the state of the entire component hierarchy to the server message, i.e.,
      * on initialization or when the client page is reloaded.
      * 
-     * @throws SerialException
+     * @throws SerialException when the property cannot be de-serialized.
      */
     private void renderComponentsFull()
     throws SerialException {
@@ -386,7 +391,7 @@ class OutputProcessor {
     /**
      * Renders an incremental update to the state of the client component hierarchy.
      * 
-     * @throws SerialException
+     * @throws SerialException when the property cannot be de-serialized.
      */
     private void renderComponentsIncremental() 
     throws SerialException {
@@ -492,7 +497,7 @@ class OutputProcessor {
      * @param propertyName the name of the property
      * @param renderNulls flag indicating whether null values should be rendered (i.e., when updating an existing) 
      *        or ignored (i.e., when rendering a complete component)
-     * @throws SerialException
+     * @throws SerialException when the property cannot be de-serialized.
      */
     private void renderComponentProperty(Element parentElement, ComponentSynchronizePeer componentPeer, 
             Component c, String propertyName, boolean renderNulls) 
@@ -525,7 +530,7 @@ class OutputProcessor {
      * @param propertyIndex the index of the property (-1 for a non-indexed property)
      * @param renderNulls flag indicating whether null values should be rendered (i.e., when updating an existing) 
      *        or ignored (i.e., when rendering a complete component)
-     * @throws SerialException
+     * @throws SerialException when the property cannot be de-serialized.
      */
     private void renderComponentPropertyImpl(Element parentElement, ComponentSynchronizePeer componentPeer, 
             Component c, String propertyName, int propertyIndex, boolean renderNulls) 
@@ -609,6 +614,8 @@ class OutputProcessor {
      * 
      * @param parentElement the element to append the component element to
      * @param c the rendering component
+     * @return the element 
+     * @throws SerialException when the property cannot be de-serialized.
      */
     private Element renderComponentState(Element parentElement, Component c)
     throws SerialException {
@@ -702,6 +709,10 @@ class OutputProcessor {
      * Sets the directly referenced style of a component.
      * If the style has not been rendered in the current synchronization message,
      * it will be added to it.
+     * @param element the element
+     * @param c the component
+     * @param required required ?
+     * @throws SerialException when the property cannot be de-serialized.
      */
     private void renderComponentStyle(Element element, Component c, boolean required) 
     throws SerialException {
@@ -746,6 +757,7 @@ class OutputProcessor {
      * @param c the rendering component
      * @param required require attribute to be rendered, even if style is null
      *        (used when updating style)
+     * @throws SerialException when the property cannot be de-serialized.
      */ 
     private void renderComponentStyleName(Element element, Component c, boolean required) 
     throws SerialException {
@@ -793,7 +805,7 @@ class OutputProcessor {
      * @param upElement the "up" update element
      * @param c the updating component
      * @param update the <code>ServerComponentUpdate</code>
-     * @throws SerialException
+     * @throws SerialException when the property cannot be de-serialized.
      */
     private void renderComponentUpdatedProperties(Element upElement, Component c, ServerComponentUpdate update) 
     throws SerialException {
@@ -874,7 +886,7 @@ class OutputProcessor {
      * @param componentClass the component class
      * @param sElement the style ("s") element into which the style should be rendered
      * @param style the style
-     * @throws SerialException
+     * @throws SerialException when the property cannot be de-serialized.
      */
     private void renderStyle(Class componentClass, Element sElement, Style style)
     throws SerialException {
@@ -937,7 +949,7 @@ class OutputProcessor {
     /**
      * Renders the complete style sheet of an application to the ServerMessage.
      * 
-     * @throws SerialException
+     * @throws SerialException when the property cannot be de-serialized.
      */
     private void renderStyleSheet() 
     throws SerialException {

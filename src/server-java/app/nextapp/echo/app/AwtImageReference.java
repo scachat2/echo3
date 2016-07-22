@@ -128,6 +128,7 @@ implements ImageReference {
      * usage at the cost of increased processor workload.
      * You should also override the <code>getWidth()</code> and 
      * <code>getHeight()</code> methods.
+     * @return the image
      */
     public Image getImage() {
         return image;
@@ -150,6 +151,9 @@ implements ImageReference {
 
     /**
      * @see java.io.Serializable
+     * @param in the stream to read the object from     
+     * @throws IOException if I/O errors occur
+     * @throws ClassNotFoundException if a class is not found
      */
     private void readObject(ObjectInputStream in)
     throws IOException, ClassNotFoundException {
@@ -168,6 +172,8 @@ implements ImageReference {
 
     /**
      * @see java.io.Serializable
+     * @throws IOException if I/O errors occur
+     * @param out the stream to write the object to
      */
     private void writeObject(ObjectOutputStream out) 
     throws IOException {

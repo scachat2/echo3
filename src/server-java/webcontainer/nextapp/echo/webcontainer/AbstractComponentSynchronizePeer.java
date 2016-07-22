@@ -225,6 +225,7 @@ implements ComponentSynchronizePeer {
      * Adds a non-indexed output property.  
      * 
      * @see #addOutputProperty(java.lang.String, boolean)
+     * @param propertyName the property name
      */
     public void addOutputProperty(String propertyName) {
         addOutputProperty(propertyName, false);
@@ -254,7 +255,7 @@ implements ComponentSynchronizePeer {
      * Adds a required component class that must also be initialized before this
      * component can be rendered.
      * 
-     * @param componentClass
+     * @param componentClass the component class
      */
     public void addRequiredComponentClass(Class componentClass) {
         if (requiredComponentClasses == null) {

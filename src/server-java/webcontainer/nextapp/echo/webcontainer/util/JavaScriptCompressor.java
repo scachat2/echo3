@@ -78,7 +78,7 @@ public class JavaScriptCompressor {
     /**
      * Creates a new <code>JavaScriptCompressor</code> instance.
      * 
-     * @param script
+     * @param script the script
      */
     private JavaScriptCompressor(String script) {
         this.script = script;

@@ -47,6 +47,7 @@ public class IntrospectionUtil {
      * @param classLoader the <code>ClassLoader</code> through which 
      *        introspection may be performed
      * @return the type hierarchy
+     * @throws ClassNotFoundException if a class can't be found
      */
     public static String[] getTypeHierarchy(String type, ClassLoader classLoader) 
     throws ClassNotFoundException {
@@ -67,6 +68,8 @@ public class IntrospectionUtil {
      * @param baseType the base type
      * @param testType the test type
      * @param classLoader the <code>ClassLoader</code> to use to load the classes for testing
+     * @throws ClassNotFoundException if a class can't be found
+     * @return true if it can be assigned
      */
     public static boolean isAssignableFrom(String testType, String baseType, ClassLoader classLoader) 
     throws ClassNotFoundException {

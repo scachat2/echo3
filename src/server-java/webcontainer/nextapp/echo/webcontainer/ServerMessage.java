@@ -166,7 +166,7 @@ public class ServerMessage {
      * possible, a new "message-part" element is created and the directive is
      * added to it.
      * 
-     * @param groupId
+     * @param groupId the group id
      * @param processor the name of the client-side processor object which will
      *        process the message part, e.g., "EchoEventUpdate", or
      *        "EchoDomUpdate"

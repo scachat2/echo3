@@ -8,6 +8,14 @@
                  /_/ /_/  \_,_/_/_/_/\__/|__,__/\___/_/ /_/\_\ 
                                                                
 
+About this fork
+===============
+
+As development on the main project slows down, the echo framework is still a 
+great framework.
+We"ll maintain this version, and probably integrate some of the new components
+we built over echo3
+
 What is Echo?
 =============
 

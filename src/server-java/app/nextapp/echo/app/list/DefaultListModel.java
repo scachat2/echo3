@@ -101,7 +101,7 @@ public class DefaultListModel extends AbstractListModel {
     /**
      * Returns the item at the specified index in the list.
      *
-     * @param index 
+     * @param index the item index
      * @return the item
      */
     public Object get(int index) {

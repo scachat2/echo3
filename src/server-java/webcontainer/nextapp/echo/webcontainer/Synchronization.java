@@ -1,4 +1,4 @@
-/* 
+/*
  * This file is part of the Echo Web Application Framework (hereinafter "Echo").
  * Copyright (C) 2002-2009 NextApp, Inc.
  *
@@ -26,7 +26,6 @@
  * the provisions above, a recipient may use your version of this file under
  * the terms of any one of the MPL, the GPL or the LGPL.
  */
-
 package nextapp.echo.webcontainer;
 
 import java.io.IOException;
@@ -37,41 +36,50 @@ import nextapp.echo.app.util.Log;
 import nextapp.echo.webcontainer.util.XmlRequestParser.InvalidXmlException;
 
 /**
- * The high-level object which encapsulates the core of the client-server synchronization process for 
- * server-side applications.
+ * The high-level object which encapsulates the core of the client-server
+ * synchronization process for server-side applications.
  */
-public class Synchronization 
-implements SynchronizationState {
+public class Synchronization
+        implements SynchronizationState {
 
-    /** The <code>Connection</code> being processed. */
+    /**
+     * The <code>Connection</code> being processed.
+     */
     private Connection conn;
-    
-    /** The relevant <code>UserInstance</code>. */
+
+    /**
+     * The relevant <code>UserInstance</code>.
+     */
     private UserInstance userInstance;
-    
-    /** Flag indicating whether synchronization is coming from an out-of-sync client. */
+
+    /**
+     * Flag indicating whether synchronization is coming from an out-of-sync
+     * client.
+     */
     private boolean outOfSync = false;
-    
+
     private InputProcessor inputProcessor;
 
     /**
      * Creates a new <code>Synchronization</code>.
-     * 
-     * @param conn the synchronization <code>Connection</code> 
+     *
+     * @param conn the synchronization <code>Connection</code>
+     * @throws IOException if I/O errors occur
      */
-    public Synchronization(Connection conn) 
-    throws IOException {
+    public Synchronization(Connection conn)
+            throws IOException {
         super();
         this.conn = conn;
     }
-    
+
     /**
      * @see nextapp.echo.webcontainer.SynchronizationState#isOutOfSync()
      */
+    @Override
     public boolean isOutOfSync() {
         return outOfSync;
     }
-    
+
     /**
      * @see nextapp.echo.webcontainer.SynchronizationState#setOutOfSync()
      */
@@ -81,21 +89,24 @@ implements SynchronizationState {
 
     /**
      * Processes input from the connection and renders output.
-     * 
+     *
      * Performs the following operations:
      * <ul>
-     *  <li>Initializes the <code>UserInstance</code> if it is new.</li>
-     *  <li>Activates the <code>ApplicationInstance</code>.</li>
-     *  <li>Processes input to the connection using an <code>InputProcessor</code>.</li>
-     *  <li>Generates output for the connection using an <code>OutputProcessor</code>.</li>
-     *  <li>Purges updates from the <code>UpdateManager</code> (which were processed by the <code>OutputProcessor</code>.</li>
-     *  <li>Deactivates the <code>ApplicationInstance</code>.</li>
+     * <li>Initializes the <code>UserInstance</code> if it is new.</li>
+     * <li>Activates the <code>ApplicationInstance</code>.</li>
+     * <li>Processes input to the connection using an
+     * <code>InputProcessor</code>.</li>
+     * <li>Generates output for the connection using an
+     * <code>OutputProcessor</code>.</li>
+     * <li>Purges updates from the <code>UpdateManager</code> (which were
+     * processed by the <code>OutputProcessor</code>.</li>
+     * <li>Deactivates the <code>ApplicationInstance</code>.</li>
      * </ul>
-     * 
-     * @throws IOException
+     *
+     * @throws IOException if I/O errors occur
      */
-    public void process() 
-    throws IOException {
+    public void process()
+            throws IOException {
         try {
             inputProcessor = new InputProcessor(this, conn);
         } catch (InvalidXmlException ex) {
@@ -104,12 +115,12 @@ implements SynchronizationState {
             conn.getResponse().sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid XML");
             return;
         }
-        
+
         userInstance = conn.getUserInstance(inputProcessor.getWindowId(), inputProcessor.getInitId());
 
-        synchronized(userInstance) {
+        synchronized (userInstance) {
             boolean initRequired = !userInstance.isInitialized();
-            
+
             if (initRequired) {
                 // Initialize user instance.
                 userInstance.initHTTP(conn);
@@ -119,18 +130,18 @@ implements SynchronizationState {
             try {
                 // Process client input.
                 inputProcessor.process();
-                
+
                 // Manage render states.
                 if (userInstance.getUpdateManager().getServerUpdateManager().isFullRefreshRequired()) {
                     userInstance.clearRenderStates();
                 } else {
                     userInstance.purgeRenderStates();
                 }
-                
+
                 // Render updates.
                 OutputProcessor outputProcessor = new OutputProcessor(this, conn);
                 outputProcessor.process();
-                
+
                 // Purge updates.
                 userInstance.getUpdateManager().purge();
             } finally {

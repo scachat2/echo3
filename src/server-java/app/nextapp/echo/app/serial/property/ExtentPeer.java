@@ -66,7 +66,7 @@ implements SerialPropertyPeer {
      * 
      * @param value the string value
      * @return an <code>Extent</code> (may be a <code>DecimalExtent</code> if the value contains a fractional part)
-     * @throws SerialException
+     * @throws SerialException when the property cannot be de-serialized.
      */
     public static Extent fromString(String value) 
     throws SerialException {
@@ -117,7 +117,7 @@ implements SerialPropertyPeer {
      * 
      * @param extent the <code>Extent</code> (or <code>DecimalExtent</code>)
      * @return a string representation
-     * @throws SerialException
+     * @throws SerialException when the property cannot be de-serialized.
      */
     public static String toString(Extent extent) 
     throws SerialException {
@@ -131,6 +131,7 @@ implements SerialPropertyPeer {
     /**
      * @see nextapp.echo.app.serial.SerialPropertyPeer#toProperty(Context,
      *      Class, org.w3c.dom.Element)
+     * @throws SerialException when the property cannot be de-serialized.
      */
     public Object toProperty(Context context, Class objectClass, Element propertyElement) 
     throws SerialException {
@@ -141,6 +142,7 @@ implements SerialPropertyPeer {
     /**
      * @see nextapp.echo.app.serial.SerialPropertyPeer#toXml(nextapp.echo.app.util.Context, 
      *      java.lang.Class, org.w3c.dom.Element, java.lang.Object)
+     * @throws SerialException when the property cannot be de-serialized.
      */
     public void toXml(Context context, Class objectClass, Element propertyElement, Object propertyValue) 
     throws SerialException {

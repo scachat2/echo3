@@ -55,6 +55,7 @@ implements CommandSynchronizePeer {
          * 
          * @param context the relevant <code>Context</code>
          * @param command the <code>Command</code> being rendered
+         * @return the property value
          */
         public Object getProperty(Context context, Command command);
     }

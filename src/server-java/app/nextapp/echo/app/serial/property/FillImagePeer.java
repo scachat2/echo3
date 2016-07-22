@@ -66,7 +66,7 @@ implements SerialPropertyPeer {
      *        <code>SerialContext</code> and <code>PropertyPeerFactory</code>
      * @param fillImage the <code>FillImage</code> to render
      * @return a generated <code>&lt;fi&gt;</code> element representing the fill image
-     * @throws SerialException
+     * @throws SerialException when the property cannot be de-serialized.
      */
     public Element toElement(Context context, FillImage fillImage) 
     throws SerialException {
@@ -103,7 +103,7 @@ implements SerialPropertyPeer {
      *        <code>SerialContext</code> and <code>PropertyPeerFactory</code>
      * @param fiElement the <code>&lt;fi&gt;</code> element to parse
      * @return a <code>FillImage</code> representation of the element
-     * @throws SerialException
+     * @throws SerialException when the property cannot be de-serialized.
      */
     public FillImage fromElement(Context context, Element fiElement) 
     throws SerialException {
@@ -137,6 +137,7 @@ implements SerialPropertyPeer {
     /**
      * @see nextapp.echo.app.serial.SerialPropertyPeer#toProperty(nextapp.echo.app.util.Context,
      *      java.lang.Class, org.w3c.dom.Element)
+     * @throws SerialException when the property cannot be de-serialized.
      */
     public Object toProperty(Context context, Class objectClass, Element propertyElement) 
     throws SerialException {
@@ -147,6 +148,7 @@ implements SerialPropertyPeer {
     /**
      * @see nextapp.echo.app.serial.SerialPropertyPeer#toXml(nextapp.echo.app.util.Context,
      *      java.lang.Class, org.w3c.dom.Element, java.lang.Object)
+     * @throws SerialException when the property cannot be de-serialized.
      */
     public void toXml(Context context, Class objectClass, Element propertyElement, Object propertyValue) 
     throws SerialException {

@@ -122,6 +122,8 @@ public interface ContainerContext {
     /**
      * Determines if the authenticated user is in the specified logical "role",
      * by querying the inbound servlet request. 
+     * @param role the logical role
+     * @return true if the user is in the role
      */
     public boolean isUserInRole(String role);
 

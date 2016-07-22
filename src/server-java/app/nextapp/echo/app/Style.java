@@ -41,23 +41,33 @@ extends Serializable {
     
     /**
      * Retrieves the value of the specified indexed property.
+     * @param propertyName the property name
+     * @param index the property index
+     * @return the value
      */
     public Object getIndex(String propertyName, int index);
     
     /**
      * Retrieves the value of the specified indexed property.
      * @deprecated use {@link #getIndex(String, int)} instead.
+     * @param propertyName the property name
+     * @param index the property index
+     * @return the value
      */
     public Object getIndexedProperty(String propertyName, int index);
     
     /**
      * Retrieves the value of the specified property.
+     * @param propertyName the property name
+     * @return the value
      */
     public Object get(String propertyName);
     
     /**
      * Retrieves the value of the specified property.
      * @deprecated use {@link #get(String)} instead.
+     * @param propertyName the property name
+     * @return the value
      */
     public Object getProperty(String propertyName);
     
@@ -66,6 +76,7 @@ extends Serializable {
      * 
      * @return an <code>Iterator</code> that returns the set indices in
      *         incrementing order as <code>Integer</code>s
+     * @param propertyName the property name
      */
     public Iterator getPropertyIndices(String propertyName);
     

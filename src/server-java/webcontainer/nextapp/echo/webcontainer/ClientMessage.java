@@ -109,7 +109,7 @@ public class ClientMessage {
      * Creates a new <Code>ClientMessage</code>.
      * 
      * @param document the XML DOM received from the client
-     * @throws IOException
+     * @throws IOException if I/O errors occur
      */
     public ClientMessage(Document document) 
     throws IOException {
@@ -175,7 +175,7 @@ public class ClientMessage {
      * <code>ClientMesage.Processor</code>s associated with each top-level directive type.
      * 
      * @param context the <code>Context</code>
-     * @throws IOException
+     * @throws IOException if I/O errors occur
      */
     public void process(Context context)
     throws IOException {

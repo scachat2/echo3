@@ -48,9 +48,11 @@ public class PropertiesDiscovery {
      * the specified resource name.
      * 
      * @param resourceName the name of the properties file(s) to load
+     * @param classLoader the class loader
      * @return a map containing properties of all properties files 
      *         in the CLASSPATH matching the specified 
      *         <code>resourceName</code>
+     * @throws IOException if I/O errors occur
      */
     public static Map loadProperties(String resourceName, ClassLoader classLoader) 
     throws IOException {

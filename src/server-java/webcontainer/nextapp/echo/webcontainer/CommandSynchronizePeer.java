@@ -48,6 +48,7 @@ public interface CommandSynchronizePeer {
     
     /**
      * Returns the remote client component name.
+     * @return the name
      */
     public String getClientCommandType();
 

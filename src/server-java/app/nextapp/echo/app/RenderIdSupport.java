@@ -51,6 +51,7 @@ public interface RenderIdSupport {
      * Returns an identifier that is unique within the 
      * <code>ApplicationInstance</code> with which the implementor will be 
      * used.
+     * @return a unique render id
      */
     public String getRenderId();
 }

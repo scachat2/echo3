@@ -57,6 +57,7 @@ public class BoxShadowPeer implements SerialPropertyPeer {
      * @param boxShadow
      *            the box shadow to render
      * @return the created <code>Element</code> node
+     * @throws SerialException when the property cannot be de-serialized.
      */
     public static final Node toNode(Context context, BoxShadow boxShadow) throws SerialException {
         SerialContext serialContext = (SerialContext) context.get(SerialContext.class);

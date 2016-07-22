@@ -1,4 +1,4 @@
-/* 
+/*
  * This file is part of the Echo Web Application Framework (hereinafter "Echo").
  * Copyright (C) 2002-2009 NextApp, Inc.
  *
@@ -26,7 +26,6 @@
  * the provisions above, a recipient may use your version of this file under
  * the terms of any one of the MPL, the GPL or the LGPL.
  */
-
 package nextapp.echo.webcontainer.util;
 
 import java.io.ByteArrayOutputStream;
@@ -37,16 +36,16 @@ import java.util.zip.GZIPOutputStream;
  * Utility class for GZip compression.
  */
 public class GZipCompressor {
-    
+
     /**
      * Compresses a String.
-     * 
+     *
      * @param s the String to compress
      * @return an array of bytes containing GZip-compression output
-     * @throws IOException
+     * @throws IOException if I/O errors occur
      */
-    public static byte[] compress(String s) 
-    throws IOException {
+    public static byte[] compress(String s)
+            throws IOException {
         ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
         GZIPOutputStream gZipOut = new GZIPOutputStream(byteOut);
         gZipOut.write(s.getBytes());

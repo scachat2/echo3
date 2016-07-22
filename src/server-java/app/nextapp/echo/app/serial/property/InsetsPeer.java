@@ -101,7 +101,7 @@ implements SerialPropertyPeer {
      * 
      * @param extent the <code>extent</code>
      * @return a string representation of the extent, or 0 if the extent is null
-     * @throws SerialException
+     * @throws SerialException when the property cannot be de-serialized.
      */
     private static String toString(Extent extent) 
     throws SerialException {
@@ -113,7 +113,7 @@ implements SerialPropertyPeer {
      * 
      * @param insets the <code>Insets</code> property
      * @return a string representation
-     * @throws SerialException
+     * @throws SerialException  when the property cannot be de-serialized.
      */
     public static String toString(Insets insets) 
     throws SerialException {

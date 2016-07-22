@@ -50,6 +50,7 @@ public class SerialUtil {
      *        representation will be added as a child
      * @param propertyName the name of the property
      * @param propertyValue the value of the property
+     * @throws SerialException when the property cannot be de-serialized.
      */
     public static void toXml(Context context, Class objectClass, Element parentElement, String propertyName, 
             Object propertyValue) 

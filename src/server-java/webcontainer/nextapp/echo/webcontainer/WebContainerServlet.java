@@ -1,4 +1,4 @@
-/* 
+/*
  * This file is part of the Echo Web Application Framework (hereinafter "Echo").
  * Copyright (C) 2002-2009 NextApp, Inc.
  *
@@ -26,7 +26,6 @@
  * the provisions above, a recipient may use your version of this file under
  * the terms of any one of the MPL, the GPL or the LGPL.
  */
-
 package nextapp.echo.webcontainer;
 
 import nextapp.echo.app.ApplicationInstance;
@@ -50,194 +49,221 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Web container <code>HttpServlet</code> implementation.
- * An Echo application should provide an derivative of this
- * class which is registered in the web application
- * deployment descriptor.
+ * Web container <code>HttpServlet</code> implementation. An Echo application
+ * should provide an derivative of this class which is registered in the web
+ * application deployment descriptor.
  */
 public abstract class WebContainerServlet extends HttpServlet {
 
-
-    
-    /** A <code>ThreadLocal</code> reference to the <code>Connection</code> relevant to the current thread. */ 
+    /**
+     * A <code>ThreadLocal</code> reference to the <code>Connection</code>
+     * relevant to the current thread.
+     */
     private static final ThreadLocal activeConnection = new ThreadLocal();
-    
+
     /**
      * A flag indicating whether caching should be disabled for all services.
      * This flag is for testing purposes only, and should be disabled for
      * production use.
      */
     public static final boolean DISABLE_CACHING = false;
-    
-    /** Flag indicating whether client-side debug console should be enabled. */
-    public static final boolean ENABLE_CLIENT_DEBUG_CONSOLE = true;
-    
+
     /**
-     * Constant for <code>getInstanceMode()</code> indicating that one instance (<code>UserInstance</code> of
-     * the application should exist per session.
-     * If the user visits the application in a different browser window, the state of the singleton instance will
-     * be displayed.  The user will experience "window not synchronized" errors if the user attempts to operate
-     * the same application from multiple windows.
+     * Flag indicating whether client-side debug console should be enabled.
+     */
+    public static final boolean ENABLE_CLIENT_DEBUG_CONSOLE = true;
+
+    /**
+     * Constant for <code>getInstanceMode()</code> indicating that one instance
+     * (<code>UserInstance</code> of the application should exist per session.
+     * If the user visits the application in a different browser window, the
+     * state of the singleton instance will be displayed. The user will
+     * experience "window not synchronized" errors if the user attempts to
+     * operate the same application from multiple windows.
      */
     public static final int INSTANCE_MODE_SINGLE = 0;
-    
+
     /**
-     * Constant for <code>getInstanceMode()</code> indicating that one instance (<code>UserInstance</code> of
-     * the application should exist per session per client browser window.
-     * If the user visits the application in a different browser window, a new instance will be created.
+     * Constant for <code>getInstanceMode()</code> indicating that one instance
+     * (<code>UserInstance</code> of the application should exist per session
+     * per client browser window. If the user visits the application in a
+     * different browser window, a new instance will be created.
      */
     public static final int INSTANCE_MODE_WINDOW = 1;
-    
-    /** Request parameter identifying requested <code>Service</code>. */
-    public static final String SERVICE_ID_PARAMETER = "sid";
-    
-    /** Request parameter identifying requested <code>UserInstance</code>. */
-    public static final String USER_INSTANCE_ID_PARAMETER = "uiid";
-    
+
     /**
-     * <code>Service</code> identifier of the 'default' service. 
-     * The 'default' service is rendered when a client makes a request
-     * without a service identifier and a session DOES exist.
+     * Request parameter identifying requested <code>Service</code>.
+     */
+    public static final String SERVICE_ID_PARAMETER = "sid";
+
+    /**
+     * Request parameter identifying requested <code>UserInstance</code>.
+     */
+    public static final String USER_INSTANCE_ID_PARAMETER = "uiid";
+
+    /**
+     * <code>Service</code> identifier of the 'default' service. The 'default'
+     * service is rendered when a client makes a request without a service
+     * identifier and a session DOES exist.
      */
     public static final String SERVICE_ID_DEFAULT = "Echo.Default";
-    
-    /** <code>Service</code> identifier of the blank document service. */
-    public static final String SERVICE_ID_BLANK_DOCUMENT = "Echo.BlankDocument";
-    
+
     /**
-     * <code>Service</code> identifier of the 'new instance' service. 
-     * The 'new instance' service is rendered when a client makes a request
-     * without a service identifier and a session DOES NOT exist.
+     * <code>Service</code> identifier of the blank document service.
+     */
+    public static final String SERVICE_ID_BLANK_DOCUMENT = "Echo.BlankDocument";
+
+    /**
+     * <code>Service</code> identifier of the 'new instance' service. The 'new
+     * instance' service is rendered when a client makes a request without a
+     * service identifier and a session DOES NOT exist.
      */
     public static final String SERVICE_ID_NEW_INSTANCE = "Echo.NewInstance";
-    
+
     /**
-     * <code>Service</code> identifier of the 'session expired' service.
-     * The 'session expired' service is rendered when a client makes a
-     * request that has an identifier and is intended for an active session, 
-     * but no session exists. 
+     * <code>Service</code> identifier of the 'session expired' service. The
+     * 'session expired' service is rendered when a client makes a request that
+     * has an identifier and is intended for an active session, but no session
+     * exists.
      */
     public static final String SERVICE_ID_SESSION_EXPIRED = "Echo.Expired";
-    
-    /** Global handler for multipart/form-data encoded HTTP requests. */
+
+    /**
+     * Global handler for multipart/form-data encoded HTTP requests.
+     */
     private static MultipartRequestWrapper multipartRequestWrapper;
-    
-    /** Time at which servlet was loaded by class loader. */
+
+    /**
+     * Time at which servlet was loaded by class loader.
+     */
     private static final long startupTime = System.currentTimeMillis();
-    
-    /** Global <code>ResourceRegistry</code>. */
+
+    /**
+     * Global <code>ResourceRegistry</code>.
+     */
     private static final ResourceRegistry resources = new ResourceRegistry();
-    
-    /** Global <code>ServiceRegistry</code>. */
+
+    /**
+     * Global <code>ServiceRegistry</code>.
+     */
     private static final ServiceRegistry services = new ServiceRegistry();
 
     static {
         // Install bootstrap JavaScript service.
         BootService.install(services);
-        
+
         // Register "Echo" package, add standard resources.
         resources.addPackage("Echo", "nextapp/echo/webcontainer/resource/");
         resources.add("Echo", "resource/Transparent.gif", ContentType.IMAGE_GIF);
         resources.add("Echo", "resource/Blank.html", ContentType.TEXT_HTML);
-        
+
         // Add standard services.
         services.add(ResourceService.INSTANCE);
         services.add(new StaticTextService(SERVICE_ID_BLANK_DOCUMENT, "text/html", "<html></html>"));
     }
-    
+
     /**
-     * An interface implemented by a supporting object that will handle 
-     * multipart/form-data encoded HTTP requests.  This type of request is
-     * required for file uploads.  Echo does not provide internal support
-     * for file uploads, but instead provides hooks for file-upload handling
-     * components.  
+     * An interface implemented by a supporting object that will handle
+     * multipart/form-data encoded HTTP requests. This type of request is
+     * required for file uploads. Echo does not provide internal support for
+     * file uploads, but instead provides hooks for file-upload handling
+     * components.
      */
     public static interface MultipartRequestWrapper {
-    
+
         /**
-         * Returns a replacement <code>HttpServletRequest</code> object that
-         * may be used to handle a multipart/form-data encoded HTTP request.
+         * Returns a replacement <code>HttpServletRequest</code> object that may
+         * be used to handle a multipart/form-data encoded HTTP request.
          *
          * @param request The HTTP request provided from the servlet container
-         *        that has multipart/form-data encoding.
-         * @return An HTTP request that is capable of handling 
-         *         multipart/form-data encoding.
+         * that has multipart/form-data encoding.
+         * @return An HTTP request that is capable of handling
+         * multipart/form-data encoding.
+         * @throws IOException if I/O errors occur
+         * @throws ServletException if servlet errors occur
          */
         public HttpServletRequest getWrappedRequest(HttpServletRequest request)
-        throws IOException, ServletException;
+                throws IOException, ServletException;
     }
 
     /**
-     * Returns a reference to the <code>Connection</code> that is 
-     * relevant to the current thread, or null if no connection is relevant.
-     * 
+     * Returns a reference to the <code>Connection</code> that is relevant to
+     * the current thread, or null if no connection is relevant.
+     *
      * @return the relevant <code>Connection</code>
      */
     public static final Connection getActiveConnection() {
         return (Connection) activeConnection.get();
     }
-    
+
     /**
      * Returns the multipart/form-data encoded HTTP request handler.
-     * 
+     *
      * @return The multipart/form-data encoded HTTP request handler.
      * @see #setMultipartRequestWrapper
      */
     public static MultipartRequestWrapper getMultipartRequestWrapper() {
         return multipartRequestWrapper;
     }
-    
+
     /**
      * Retrieves the global <code>ResourceRegistry</code>.
-     * 
-     * @return the global <code>ResourceRegistry</code> 
+     *
+     * @return the global <code>ResourceRegistry</code>
      */
     public static ResourceRegistry getResourceRegistry() {
         return resources;
     }
-    
+
     /**
      * Retrieves the global <code>ServiceRegistry</code>.
-     * 
+     *
      * @return The global <code>ServiceRegistry</code>.
      */
     public static ServiceRegistry getServiceRegistry() {
         return services;
     }
-    
+
     /**
-     * Sets the multipart/form-data encoded HTTP request handler.
-     * The multipart request wrapper can only be set one time.  It should be set
-     * in a static block of your Echo application.  This method will disregard
-     * additional attempts to set the wrapper if the provided wrapper's class
-     * is identical to the existing one.  If the wrapper is already set and the
-     * new wrapper object's class is different or the wrapper is null, an
-     * exception is thrown.
+     * Sets the multipart/form-data encoded HTTP request handler. The multipart
+     * request wrapper can only be set one time. It should be set in a static
+     * block of your Echo application. This method will disregard additional
+     * attempts to set the wrapper if the provided wrapper's class is identical
+     * to the existing one. If the wrapper is already set and the new wrapper
+     * object's class is different or the wrapper is null, an exception is
+     * thrown.
      *
-     * @param multipartRequestWrapper The handler for multipart/form-data 
-     *        encoded HTTP requests.
-     * @throws IllegalStateException if the application attempts to change
-     *        a previously set multipart request handler.
+     * @param multipartRequestWrapper The handler for multipart/form-data
+     * encoded HTTP requests.
+     * @throws IllegalStateException if the application attempts to change a
+     * previously set multipart request handler.
      */
     public static final void setMultipartRequestWrapper(MultipartRequestWrapper multipartRequestWrapper) {
         if (WebContainerServlet.multipartRequestWrapper == null) {
             WebContainerServlet.multipartRequestWrapper = multipartRequestWrapper;
         } else {
-            if (multipartRequestWrapper == null || 
-                    !WebContainerServlet.multipartRequestWrapper.getClass().getName().equals(
-                    multipartRequestWrapper.getClass().getName())) {
+            if (multipartRequestWrapper == null
+                    || !WebContainerServlet.multipartRequestWrapper.getClass().getName().equals(
+                            multipartRequestWrapper.getClass().getName())) {
                 throw new IllegalStateException("MultipartRequestWrapper already set.");
             }
         }
     }
-    
-    /** Collection of JavaScript <code>Service</code>s which should be initially loaded. */
-    private List initScripts = null; 
-    
-    /** Collection of CSS style sheet <code>Service</code>s which should be initially loaded. */
+
+    /**
+     * Collection of JavaScript <code>Service</code>s which should be initially
+     * loaded.
+     */
+    private List initScripts = null;
+
+    /**
+     * Collection of CSS style sheet <code>Service</code>s which should be
+     * initially loaded.
+     */
     private List initStyleSheets = null;
-    
+
     private WebSocketConnectionHandler wsHandler = null;
+
     /**
      * Default constructor.
      */
@@ -274,7 +300,7 @@ public abstract class WebContainerServlet extends HttpServlet {
 
     /**
      * Adds a JavaScript service to be loaded at initialization.
-     * 
+     *
      * @param service the service which will provide JavaScript content.
      */
     protected void addInitScript(Service service) {
@@ -283,14 +309,14 @@ public abstract class WebContainerServlet extends HttpServlet {
         } else if (initScripts.contains(service)) {
             return;
         }
-        
+
         services.add(service);
         initScripts.add(service);
     }
-    
+
     /**
      * Adds a CSS style sheet to be loaded at initialization.
-     * 
+     *
      * @param service the service which will provide the CSS content.
      */
     protected void addInitStyleSheet(Service service) {
@@ -303,44 +329,47 @@ public abstract class WebContainerServlet extends HttpServlet {
         services.add(service);
         initStyleSheets.add(service);
     }
-    
+
     protected final void setWebSocketConnectionHandler(WebSocketConnectionHandler handler) {
         this.wsHandler = handler;
         this.wsHandler.assignParent(this);
     }
-    
+
     protected final void removeWebSocketConnectionHandler() {
         wsHandler = null;
     }
-    
+
     public final boolean hasWebSocketConnectionHandler() {
         return wsHandler != null;
     }
-    
+
     /**
      * Handles a GET request.
      *
-     * @see #process(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     * @see #process(javax.servlet.http.HttpServletRequest,
+     * javax.servlet.http.HttpServletResponse)
      */
-    public final void doGet(HttpServletRequest request, HttpServletResponse response) 
-    throws IOException, ServletException {
+    public final void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
         process(request, response);
     }
-    
+
     /**
      * Handles a POST request.
      *
-     * @see #process(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     * @see #process(javax.servlet.http.HttpServletRequest,
+     * javax.servlet.http.HttpServletResponse)
      */
-    public final void doPost(HttpServletRequest request, HttpServletResponse response) 
-    throws IOException, ServletException {
+    public final void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
         process(request, response);
     }
-    
+
     /**
      * Returns the service that corresponds to the specified Id.
      *
      * @param id The id of the service to return.
+     * @param hasInstance instance?
      * @return The service corresponding to the specified Id.
      */
     private static Service getService(String id, boolean hasInstance) {
@@ -355,7 +384,7 @@ public abstract class WebContainerServlet extends HttpServlet {
                 id = SERVICE_ID_SESSION_EXPIRED;
             }
         }
-        
+
         Service service = services.get(id);
         if (service == null) {
             if (SERVICE_ID_DEFAULT.equals(id)) {
@@ -368,19 +397,19 @@ public abstract class WebContainerServlet extends HttpServlet {
         }
         return service;
     }
-    
+
     /**
      * Returns an iterator over initialization script services.
-     * 
+     *
      * @return the iterator
      */
     public Iterator getInitScripts() {
         return initScripts == null ? null : Collections.unmodifiableCollection(initScripts).iterator();
     }
-    
+
     /**
      * Returns an iterator over initialization script services.
-     * 
+     *
      * @return the iterator
      */
     public Iterator getInitStyleSheets() {
@@ -388,36 +417,41 @@ public abstract class WebContainerServlet extends HttpServlet {
     }
 
     /**
-     * Returns the instance operating mode of the application, determining how the application will perform if it
-     * is visited by multiple browser windows.
-     * 
+     * Returns the instance operating mode of the application, determining how
+     * the application will perform if it is visited by multiple browser
+     * windows.
+     *
      * @return the operating mode, one of the following values:
-     *         <ul>
-     *          <li><code>INSTANCE_MODE_SINGLE</code> (the default) to allow only a single instance of the application</li>
-     *          <li><code>INSTANCE_MODE_WINDOW</code> to allow multiple instances of the application per session, with new
-     *           instances created for new browser windows</li>
-     *          </ul>
+     * <ul>
+     * <li><code>INSTANCE_MODE_SINGLE</code> (the default) to allow only a
+     * single instance of the application</li>
+     * <li><code>INSTANCE_MODE_WINDOW</code> to allow multiple instances of the
+     * application per session, with new instances created for new browser
+     * windows</li>
+     * </ul>
      */
     public int getInstanceMode() {
         return INSTANCE_MODE_SINGLE;
     }
-    
+
     /**
-     * Creates a new <code>ApplicationInstance</code> for visitor to an 
+     * Creates a new <code>ApplicationInstance</code> for visitor to an
      * application.
-     * 
+     *
      * @return a new <code>ApplicationInstance</code>
      */
     public abstract ApplicationInstance newApplicationInstance();
-    
+
     /**
      * Processes an HTTP request and generates a response.
-     * 
+     *
      * @param request the incoming <code>HttpServletRequest</code>
      * @param response the outgoing <code>HttpServletResponse</code>
+     * @throws IOException if I/O errors occur
+     * @throws ServletException if servlet errors occur
      */
-    protected void process(HttpServletRequest request, HttpServletResponse response) 
-    throws IOException, ServletException {
+    protected void process(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
         Connection conn = null;
         try {
             conn = new Connection(this, request, response);
@@ -428,7 +462,7 @@ public abstract class WebContainerServlet extends HttpServlet {
                 throw new ServletException("Service id \"" + serviceId + "\" not registered.");
             }
             int version = service.getVersion();
-            
+
             // Set caching directives.
             if ((!DISABLE_CACHING) && version != Service.DO_NOT_CACHE) {
                 // Setting all of the following (possibly with the exception of "Expires")
@@ -444,9 +478,9 @@ public abstract class WebContainerServlet extends HttpServlet {
                 response.setHeader("Cache-Control", "no-store");
                 response.setHeader("Expires", "0");
             }
-            
+
             service.service(conn);
-            
+
         } catch (ServletException ex) {
             processError(conn, request, response, ex);
         } catch (IOException ex) {
@@ -457,16 +491,17 @@ public abstract class WebContainerServlet extends HttpServlet {
             activeConnection.set(null);
         }
     }
-    
+
     /**
-     * Exception handler for process() method. The current implementation writes an Exception ID to the client.
-     * 
+     * Exception handler for process() method. The current implementation writes
+     * an Exception ID to the client.
+     * @param conn the connection
      * @param request The current HTTP request in progress
      * @param response The HTTP response
      * @param ex The exception triggering this error handleing.
      * @throws IOException May be thrown on issues writing to the HTTP response.
      */
-    private void processError(Connection conn, HttpServletRequest request, HttpServletResponse response, Exception ex) 
+    private void processError(Connection conn, HttpServletRequest request, HttpServletResponse response, Exception ex)
             throws IOException {
         if (conn != null) {
             try {

@@ -73,6 +73,7 @@ implements ImageReference {
      * Renders the image data in its native format to the given output stream.
      *
      * @param out the output stream to write the image
+     * @throws IOException if I/O errors occur
      */
     public abstract void render(OutputStream out) 
     throws IOException;

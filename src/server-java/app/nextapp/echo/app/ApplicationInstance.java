@@ -640,6 +640,8 @@ public abstract class ApplicationInstance implements Serializable {
      * received from the <code>UpdateManager</code>.
      * Derivative implementations should take care to invoke 
      * <code>super.processInput()</code>.
+     * @param propertyName the property name
+     * @param propertyValue the property value
      */
     public void processInput(String propertyName, Object propertyValue) {
         if (FOCUSED_COMPONENT_CHANGED_PROPERTY.equals(propertyName)) {

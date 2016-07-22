@@ -139,6 +139,7 @@ implements Service {
      * Renders the JavaScript resource using GZip encoding.
      * 
      * @param conn the relevant <code>Connection</code>
+     * @throws IOException if I/O errors occur
      */
     private void serviceGZipCompressed(Connection conn) 
     throws IOException {
@@ -151,6 +152,7 @@ implements Service {
      * Renders the JavaScript resource WITHOUT using GZip encoding.
      * 
      * @param conn the relevant <code>Connection</code>
+     * @throws IOException if I/O errors occur
      */
     private void servicePlain(Connection conn) 
     throws IOException {

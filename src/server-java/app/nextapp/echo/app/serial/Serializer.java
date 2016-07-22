@@ -150,7 +150,7 @@ public class Serializer {
      * 
      * @param propertyElement the property element, which may or may not specify a "t" attribute specifying the type name
      * @return the <code>SerialPropertyPeer</code>, if it can be determined
-     * @throws SerialException
+     * @throws SerialException when the property cannot be de-serialized.
      */
     public SerialPropertyPeer getSerialPropertyPeer(Element propertyElement) 
     throws SerialException {
@@ -174,7 +174,7 @@ public class Serializer {
      * @param componentType the component type for which the <code>Style</code> will be used
      * @param containerElement the DOM element containing the style properties
      * @return the generated <code>Style</code>
-     * @throws SerialException
+     * @throws SerialException when the property cannot be de-serialized.
      */
     public Style loadStyle(final SerialContext serialContext, String componentType, Element containerElement) 
     throws SerialException {

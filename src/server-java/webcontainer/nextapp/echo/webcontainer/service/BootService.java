@@ -1,4 +1,4 @@
-/* 
+/*
  * This file is part of the Echo Web Application Framework (hereinafter "Echo").
  * Copyright (C) 2002-2009 NextApp, Inc.
  *
@@ -26,7 +26,6 @@
  * the provisions above, a recipient may use your version of this file under
  * the terms of any one of the MPL, the GPL or the LGPL.
  */
-
 package nextapp.echo.webcontainer.service;
 
 import java.util.ArrayList;
@@ -41,17 +40,21 @@ import nextapp.echo.webcontainer.WebContainerServlet;
  */
 public class BootService {
 
-    /** Root path to core service <code>CLASSPATH</code> script resources. */
+    /**
+     * Root path to core service <code>CLASSPATH</code> script resources.
+     */
     private static final String JS_RESOURCE_PATH = "nextapp/echo/webcontainer/resource/";
-    
-    /** The singleton instance. */
+
+    /**
+     * The singleton instance.
+     */
     public static final Service SERVICE;
 
     static {
         List resourceList = new ArrayList();
         resourceList.add(JS_RESOURCE_PATH + "Core.js");
         resourceList.add(JS_RESOURCE_PATH + "Core.Web.js");
-        resourceList.add(JS_RESOURCE_PATH + "Application.js"); 
+        resourceList.add(JS_RESOURCE_PATH + "Application.js");
         resourceList.add(JS_RESOURCE_PATH + "Render.js");
         resourceList.add(JS_RESOURCE_PATH + "Sync.js");
         resourceList.add(JS_RESOURCE_PATH + "Serial.js");
@@ -63,22 +66,24 @@ public class BootService {
             resourceList.add(JS_RESOURCE_PATH + "DebugConsole.js");
         }
         resourceList.add(JS_RESOURCE_PATH + "Boot.js");
-        
+
         String[] resources = new String[resourceList.size()];
         resourceList.toArray(resources);
         SERVICE = JavaScriptService.forResources("Echo.Boot", resources);
     }
-    
+
     /**
-     * Installs the core services in the specified 
-     * <code>ServiceRegistry</code>.
-     * 
-     * services the <code>ServiceRegistry</code>
+     * Installs the core services in the specified <code>ServiceRegistry</code>.
+     *
+     * @param services the <code>ServiceRegistry</code>
      */
     public static void install(ServiceRegistry services) {
         services.add(SERVICE);
     }
-    
-    /** Non-instantiable class. */
-    private BootService() { }
+
+    /**
+     * Non-instantiable class.
+     */
+    private BootService() {
+    }
 }

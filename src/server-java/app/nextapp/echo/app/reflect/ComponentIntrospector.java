@@ -51,6 +51,8 @@ public class ComponentIntrospector extends ObjectIntrospector {
      * type.
      * 
      * @param typeName the component type name
+     * @param classLoader the class loader
+     * @throws ClassNotFoundException if a class can't be found
      */
     protected ComponentIntrospector(String typeName, ClassLoader classLoader) 
     throws ClassNotFoundException {

@@ -47,6 +47,7 @@ public interface ImageReferencePeer extends SerialPropertyPeer {
      * @param context the relevant <code>Context</code>
      * @param imageReference the <code>ImageReference</code> to be rendered
      * @return the URI of the image
+     * @throws SerialException when the property cannot be de-serialized.
      */
     public String getImageUrl(Context context, ImageReference imageReference)
     throws SerialException;

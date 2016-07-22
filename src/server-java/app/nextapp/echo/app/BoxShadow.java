@@ -61,18 +61,12 @@ public class BoxShadow implements Serializable {
     /**
      * Creates a new <code>BoxShadow (CSS3)</code>.
      * 
-     * @param hShadow
-     *            the position of the horizontal shadow. Negative values are allowed. (this property only supports <code>Extent</code>s with fixed (i.e., not percent) units)
-     * @param vShadow
-     *            the position of the vertical shadow. Negative values are allowed. (this property only supports <code>Extent</code>s with fixed (i.e., not percent) units)
-     * @param blur
-     *            the blur distance. (this property only supports <code>Extent</code>s with fixed (i.e., not percent) units)
-     * @param spread
-     *            the size of shadow. (this property only supports <code>Extent</code>s with fixed (i.e., not percent) units)
-     * @param color
-     *            the color of the shadow. Look at CSS Color Values for a complete list of possible color values.
-     * @param style
-     *            changes the shadow from an outer shadow (outset) to an inner shadow.
+     * @param hShadow the position of the horizontal shadow. Negative values are allowed. (this property only supports <code>Extent</code>s with fixed (i.e., not percent) units)
+     * @param vShadow the position of the vertical shadow. Negative values are allowed. (this property only supports <code>Extent</code>s with fixed (i.e., not percent) units)
+     * @param blur the blur distance. (this property only supports <code>Extent</code>s with fixed (i.e., not percent) units)
+     * @param spread the size of shadow. (this property only supports <code>Extent</code>s with fixed (i.e., not percent) units)
+     * @param color the color of the shadow. Look at CSS Color Values for a complete list of possible color values.
+     * @param style changes the shadow from an outer shadow (outset) to an inner shadow.
      */
     public BoxShadow(Extent hShadow, Extent vShadow, Extent blur, Extent spread, Color color, BoxStyle style) {
         this.hShadowPos = hShadow;
@@ -85,6 +79,8 @@ public class BoxShadow implements Serializable {
 
     /**
      * @see #BoxShadow(Extent, Extent, Extent, Extent, Color, nextapp.echo.app.BoxShadow.BoxStyle)
+     * @param hShadowPx the position of the horizontal shadow. Negative values are allowed. (this property only supports <code>Extent</code>s with fixed (i.e., not percent) units)
+     * @param vShadowPx the position of the vertical shadow. Negative values are allowed. (this property only supports <code>Extent</code>s with fixed (i.e., not percent) units)
      */
     public BoxShadow(int hShadowPx, int vShadowPx) {
         this(new Extent(hShadowPx), new Extent(vShadowPx), new Extent(0), new Extent(0), Color.BLACK, BoxStyle.DEFAULT);
@@ -92,6 +88,9 @@ public class BoxShadow implements Serializable {
 
     /**
      * @see #BoxShadow(Extent, Extent, Extent, Extent, Color, nextapp.echo.app.BoxShadow.BoxStyle)
+     * @param hShadowPx the position of the horizontal shadow. Negative values are allowed. (this property only supports <code>Extent</code>s with fixed (i.e., not percent) units)
+     * @param vShadowPx the position of the vertical shadow. Negative values are allowed. (this property only supports <code>Extent</code>s with fixed (i.e., not percent) units)
+     * @param color the color of the shadow. Look at CSS Color Values for a complete list of possible color values.
      */
     public BoxShadow(int hShadowPx, int vShadowPx, Color color) {
         this(new Extent(hShadowPx), new Extent(vShadowPx), new Extent(0), new Extent(0), color, BoxStyle.DEFAULT);

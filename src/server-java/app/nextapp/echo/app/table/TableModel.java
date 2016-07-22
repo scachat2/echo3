@@ -87,6 +87,7 @@ extends Serializable {
      *
      * @param column the column index (0-based)
      * @param row the row index (0-based)
+     * @return the value
      */
     public Object getValueAt(int column, int row);
     

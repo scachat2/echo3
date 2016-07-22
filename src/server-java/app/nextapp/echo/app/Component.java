@@ -279,7 +279,6 @@ implements RenderIdSupport, Serializable {
     
     /**
      * <b>Last active renderId!</b>
-     * <br />
      * Set when component is unregistering from application instance!
      * @see #renderId
      */
@@ -790,6 +789,7 @@ implements RenderIdSupport, Serializable {
     /**
      * Returns the active render id of this component.
      * @see #lastRenderId
+     * @return the active render id
      */
     public String getLastRenderId() {
         return lastRenderId;
@@ -813,6 +813,7 @@ implements RenderIdSupport, Serializable {
      * of properties when rendering.
      * 
      * @param propertyName the name of the property
+     * @param propertyIndex the index of the property
      * @return the rendered property value
      */
     public final Object getRenderIndexedProperty(String propertyName, int propertyIndex) {
@@ -833,6 +834,7 @@ implements RenderIdSupport, Serializable {
      * <code>defaultValue</code> is returned.
      * 
      * @param propertyName the name of the property
+     * @param propertyIndex the index of the property
      * @param defaultValue the value to be returned if the property is not set
      * @return the property state
      */ 
@@ -1117,6 +1119,7 @@ implements RenderIdSupport, Serializable {
     /**
      * @deprecated use focusNextId/focusPreviousId in (rare) scenario where focus of a specific component is to be avoided.
      * This method will be removed soon.
+     * @return false
      */
     public boolean isFocusTraversalParticipant() { return false; }
 
@@ -1428,6 +1431,7 @@ implements RenderIdSupport, Serializable {
     /**
      * @deprecated use focusNextId/focusPreviousId in (rare) scenario where focus of a specific component is to be avoided.
      * This method will be removed soon.
+     * @param newValue the new value
      */
     public void setFocusTraversalParticipant(boolean newValue) { }
     

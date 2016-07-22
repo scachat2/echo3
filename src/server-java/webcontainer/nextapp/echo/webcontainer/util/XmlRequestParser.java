@@ -70,6 +70,7 @@ public class XmlRequestParser {
      * @param characterEncoding the character encoding of the stream 
      * @return a cleaned version of the stream, as a 
      *         <code>ByteArrayInputStream</code>.
+     * @throws IOException if I/O errors occur
      */
     private static InputStream cleanXmlInputStream(InputStream in, String characterEncoding) 
     throws IOException{

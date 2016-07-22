@@ -94,6 +94,7 @@ public class InputProcessor {
      * 
      * @param syncState the <code>SynchronizationState</code> of the current synchronization
      * @param conn the <code>Connection</code> for which the input is being parsed
+     * @throws IOException if I/O errors occur
      */
     public InputProcessor(SynchronizationState syncState, Connection conn) 
     throws IOException {
@@ -127,6 +128,7 @@ public class InputProcessor {
      * Verifies client/server are in sync, and performs full refresh if they are not.
      * Writes incoming XML message to <code>System.err</code> in the event debug flag is enabled.
      * Invokes <code>ClientMessage.process()</code> to begin client-message processing (assuming client/server are synchronized).
+     * @throws IOException if I/O errors occur
      */
     public void process() 
     throws IOException {

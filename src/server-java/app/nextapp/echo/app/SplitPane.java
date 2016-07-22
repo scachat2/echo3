@@ -334,6 +334,7 @@ implements Pane, PaneContainer {
      * is resizable, regardless of the value of this property.
      * This property has a default value of <code>true</code>.
      * 
+     * @param newValue the new value
      * @return true if the <code>SplitPane</code> should provide
      *         a visible separator.
      */

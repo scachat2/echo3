@@ -95,6 +95,7 @@ public class ObjectIntrospector {
      * 
      * @param typeName the object type name
      * @param classLoader the <code>ClassLoader</code> to use for introspection
+     * @throws ClassNotFoundException if a class can't be found
      */
     protected ObjectIntrospector(String typeName, ClassLoader classLoader) 
     throws ClassNotFoundException {
@@ -370,7 +371,11 @@ public class ObjectIntrospector {
      * 
      * @param object the object to modify
      * @param propertyName the property name to be set
+     * @param index the property index
      * @param propertyValue the new property value
+     * @throws IllegalArgumentException if an error oocurs while calling the method thru reflection
+     * @throws IllegalAccessException if an error oocurs while calling the method thru reflection
+     * @throws InvocationTargetException if an error oocurs while calling the method thru reflection
      */
     public void setProperty(Object object, String propertyName, int index, Object propertyValue)
     throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {

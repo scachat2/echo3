@@ -42,6 +42,7 @@ public class Uid {
     
     /**
      * Generates a new identifier String.
+     * @return the uid string
      */
     public static final String generateUidString() {
         String idString = new Uid().toString();

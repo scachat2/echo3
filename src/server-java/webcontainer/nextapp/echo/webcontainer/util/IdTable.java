@@ -1,4 +1,4 @@
-/* 
+/*
  * This file is part of the Echo Web Application Framework (hereinafter "Echo").
  * Copyright (C) 2002-2009 NextApp, Inc.
  *
@@ -26,7 +26,6 @@
  * the provisions above, a recipient may use your version of this file under
  * the terms of any one of the MPL, the GPL or the LGPL.
  */
-
 package nextapp.echo.webcontainer.util;
 
 import java.io.IOException;
@@ -45,59 +44,66 @@ import java.util.Set;
 import nextapp.echo.app.RenderIdSupport;
 
 /**
- * A table which provides an identifier-to-object mapping, with the objects 
+ * A table which provides an identifier-to-object mapping, with the objects
  * being weakly referenced (i.e., the fact that they are held within this table
  * will not prevent them from being garbage collected).
- * 
- * When deserialized by Java serialization API, the references will be hard until
- * <code>purge()</code> is invoked for the first time.
+ *
+ * When deserialized by Java serialization API, the references will be hard
+ * until <code>purge()</code> is invoked for the first time.
  */
-public class IdTable 
-implements Serializable {
-    
-    /** Serial Version UID. */
+public class IdTable
+        implements Serializable {
+
+    /**
+     * Serial Version UID.
+     */
     private static final long serialVersionUID = 20070101L;
 
-    /** 
-     * Flag indicating whether hard references need to be converted to weak references (as a result of the object having been
-     * recently deserialized. 
+    /**
+     * Flag indicating whether hard references need to be converted to weak
+     * references (as a result of the object having been recently deserialized.
      */
     private boolean hasHardReferences = false;
-    
-    /** Mapping between identifiers and <code>WeakReference</code>s. */
+
+    /**
+     * Mapping between identifiers and <code>WeakReference</code>s.
+     */
     private transient Map idToReferenceMap = new HashMap();
-    
-    /** <code>ReferenceQueue</code> for garbage collected <code>WeakReference</code>s. */
+
+    /**
+     * <code>ReferenceQueue</code> for garbage collected
+     * <code>WeakReference</code>s.
+     */
     private transient ReferenceQueue referenceQueue = new ReferenceQueue();
-    
+
     /**
      * Registers an object with the <code>IdTable</code>
-     * 
+     *
      * @param object the object to identify
      */
     public void register(RenderIdSupport object) {
         purge();
         String id = object.getRenderId();
         WeakReference weakReference;
-        synchronized(idToReferenceMap) {
+        synchronized (idToReferenceMap) {
             if (!idToReferenceMap.containsKey(id)) {
                 weakReference = new WeakReference(object, referenceQueue);
                 idToReferenceMap.put(id, weakReference);
             }
         }
     }
-    
+
     /**
      * Retrieves the object associated with the specified identifier.
-     * 
+     *
      * @param id the identifier
      * @return the object (or null, if the object is not in the queue, perhaps
-     *         due to having been dereferenced and garbage collected)
+     * due to having been dereferenced and garbage collected)
      */
     public Object getObject(String id) {
         purge();
         WeakReference weakReference;
-        synchronized(idToReferenceMap) {
+        synchronized (idToReferenceMap) {
             weakReference = (WeakReference) idToReferenceMap.get(id);
         }
         if (weakReference == null) {
@@ -106,9 +112,9 @@ implements Serializable {
         Object object = weakReference.get();
         return object;
     }
-    
+
     /**
-     * Purges dereferenced/garbage collected entries from the 
+     * Purges dereferenced/garbage collected entries from the
      * <code>IdTable</code>.
      */
     private void purge() {
@@ -118,7 +124,7 @@ implements Serializable {
                 Iterator idIt = idToReferenceMap.keySet().iterator();
                 while (idIt.hasNext()) {
                     String id = (String) idIt.next();
-                    Object object = idToReferenceMap.get(id); 
+                    Object object = idToReferenceMap.get(id);
                     if (!(object instanceof WeakReference)) {
                         WeakReference weakReference = new WeakReference(object, referenceQueue);
                         idToReferenceMap.put(id, weakReference);
@@ -127,7 +133,7 @@ implements Serializable {
                 hasHardReferences = false;
             }
         }
-        
+
         // Purge weak references that are no longer hard referenced elsewhere.
         Reference reference = referenceQueue.poll();
         if (reference == null) {
@@ -139,7 +145,7 @@ implements Serializable {
             referenceSet.add(reference);
             reference = referenceQueue.poll();
         }
-        
+
         synchronized (idToReferenceMap) {
             Iterator idIt = idToReferenceMap.keySet().iterator();
             while (idIt.hasNext()) {
@@ -153,18 +159,23 @@ implements Serializable {
 
     /**
      * @see java.io.Serializable
-     * 
-     * Writes objects directly into values of Map as straight references.
-     * The values will be changed to <code>WeakReference</code>s when 
-     * purge() is called.
+     *
+     * Writes objects directly into values of Map as straight references. The
+     * values will be changed to <code>WeakReference</code>s when purge() is
+     * called.
+     *
+     * @param in the stream to read data from in order to restore the object
+     * @throws IOException if I/O errors occur
+     * @throws ClassNotFoundException If the class for an object being restored
+     * cannot be found.
      */
     private void readObject(ObjectInputStream in)
-    throws IOException, ClassNotFoundException {
+            throws IOException, ClassNotFoundException {
         in.defaultReadObject();
-        
+
         idToReferenceMap = new HashMap();
         referenceQueue = new ReferenceQueue();
-       
+
         String id = (String) in.readObject();
         if (id != null) {
             // Hard references will be written.
@@ -181,9 +192,11 @@ implements Serializable {
 
     /**
      * @see java.io.Serializable
+     * @param out the stream to write the object to
+     * @throws IOException Includes any I/O exceptions that may occur
      */
-    private void writeObject(ObjectOutputStream out) 
-    throws IOException {
+    private void writeObject(ObjectOutputStream out)
+            throws IOException {
         out.defaultWriteObject();
         Iterator it = idToReferenceMap.keySet().iterator();
         while (it.hasNext()) {

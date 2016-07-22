@@ -1,4 +1,4 @@
-/* 
+/*
  * This file is part of the Echo Web Application Framework (hereinafter "Echo").
  * Copyright (C) 2002-2012 NextApp, Inc.
  *
@@ -26,7 +26,6 @@
  * the provisions above, a recipient may use your version of this file under
  * the terms of any one of the MPL, the GPL or the LGPL.
  */
-
 package nextapp.echo.webcontainer;
 
 import javax.servlet.GenericServlet;
@@ -36,7 +35,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  * A WebSocket based implementation of AbstractConnection
- * 
+ *
  * @author Miro Yozov
  */
 public class WebSocketConnection extends AbstractConnection {
@@ -63,6 +62,7 @@ public class WebSocketConnection extends AbstractConnection {
         }
     }
 
+    @Override
     protected void storeUiid() {
         String uiidParam = request.getParameter(WebContainerServlet.USER_INSTANCE_ID_PARAMETER);
         if (uiidParam != null) {
@@ -96,10 +96,10 @@ public class WebSocketConnection extends AbstractConnection {
     }
 
     /**
-     * Determines if the <code>WebSocketConnection</code> has been initialized, i.e.,
-     * whether its <code>preInit()</code> && <code>postInit()</code> methods has
-     * been invoked.
-     * 
+     * Determines if the <code>WebSocketConnection</code> has been initialized,
+     * i.e., whether its <code>preInit()</code> and <code>postInit()</code>
+     * methods has been invoked.
+     *
      * @return true if the <code>WebSocketConnection</code> is initialized
      */
     public boolean isReady() {

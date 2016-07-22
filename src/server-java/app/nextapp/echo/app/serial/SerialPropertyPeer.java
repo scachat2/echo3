@@ -58,6 +58,7 @@ public interface SerialPropertyPeer {
      * @param propertyElement the XML &lt;p&gt; element in which the 
      *        property value should be rendered
      * @param propertyValue the property value
+     * @throws SerialException when the property cannot be de-serialized.
      */
     public void toXml(Context context, Class objectClass, Element propertyElement, Object propertyValue)
     throws SerialException;
